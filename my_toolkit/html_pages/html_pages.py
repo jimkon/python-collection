@@ -39,7 +39,7 @@ class HTMLPage(HTMLBuilder):
         super().__init__('')
 
     def add_element(self, element):
-        self._html_str = f"{self._html_str}\n<div>{element}</div>"
+        self._html_str = f"{self._html_str}\n<div>{element.html()}</div>"
         return self
 
 
@@ -103,11 +103,11 @@ class TabsHTML(TemplateHTMLBuilder):
 
     def add_tab(self, label, html_content):
         self._add_button(label)
-        self._add_div(label, html_content)
+        self._add_div(label, html_content.html())
         return self
 
     def html(self):
-        self.replace("[button]", '')
-        self.replace("[div_tab]", '')
+        self.replace("button", '')
+        self.replace("div_tab", '')
         return self._html_str
 
