@@ -4,7 +4,7 @@ import os
 import tempfile
 import matplotlib.pyplot as plt
 
-_TEMPLATE_DIR = os.path.join(os.path.dirname(os.path.abspath(__name__)), 'templates')
+_TEMPLATE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 
 
 def _read_template(template_name):
