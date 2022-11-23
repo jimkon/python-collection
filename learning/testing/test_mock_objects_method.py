@@ -48,6 +48,11 @@ class TestMockMethod(unittest.TestCase):
         """ CAREFUL with THE ORDER of the args """
         assert True
 
+    @patch.object(Object, '__init__', return_value=None) # important to return None from __init__
+    def test_init_method(self, mock_init):
+        Object()
+        mock_init.assert_called_once()
+
 
 if __name__ == '__main__':
     unittest.main()
