@@ -13,6 +13,23 @@ DATA_DIR = 'data'
 
 logger = logging.getLogger(__name__)
 
+def cprofile_func(func, *args, **kwargs):
+    pr = cProfile.Profile()
+    pr.enable()
+
+    res = func(*args, **kwargs)
+
+    pr.disable()
+    s = io.StringIO()
+    sortby = SortKey.CUMULATIVE
+    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+
+    dt = datetime.now().strftime("%Y-%d-%m_%H-%M-%S")
+    filename = f"{func.__module__}.{func.__name__}_{dt}.prof"
+    ps.dump_stats(filename)
+    logger.info(f"cProfile data stored in file {filename}")
+
+
 #https://realpython.com/primer-on-python-decorators/#decorators-with-arguments
 def cprofile(_func=None, *, filename_prefix=None):
     def decorator_cprofile(func):
