@@ -63,9 +63,25 @@ def line_coloured_by_its_gradient():
     plt.title('The color of this line is changing according to the gradient')
 
 
+def hist_and_quartiles(bins=30):
+    import numpy as np
+    data = np.random.normal(size=1000)
+
+    plt.hist(data, bins=bins, orientation="horizontal")
+
+    plt.axhline(data.mean(), color='0.05', linewidth=1, label=f"mean: {data.mean():.2f}")
+
+    plt.axhline(np.quantile(data, .25), color='0.25', linewidth=1, label=f"q 0.25")
+    plt.axhline(np.quantile(data, .75), color='0.25', linewidth=1, label=f"q 0.75")
+
+    plt.axhline(np.quantile(data, .05), color='0.45', linewidth=1, label=f"q 0.05")
+    plt.axhline(np.quantile(data, .95), color='0.45', linewidth=1, label=f"q 0.95")
+
+
 if __name__ == "__main__":
-    mixed_line_widths()
-    colourmaps()
-    line_coloured_by_its_gradient()
+    # mixed_line_widths()
+    # colourmaps()
+    # line_coloured_by_its_gradient()
+    hist_and_quartiles()
 
     plt.show()
