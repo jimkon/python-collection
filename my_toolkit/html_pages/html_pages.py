@@ -39,7 +39,12 @@ class HTMLPage(HTMLBuilder):
         super().__init__('')
 
     def add_element(self, element):
-        self._html_str = f"{self._html_str}\n<div>{element.html()}</div>"
+        if issubclass(element.__class__, HTMLBuilder):
+            element_html_str = element.html()
+        else:
+            element_html_str = str(element)
+
+        self._html_str = f"{self._html_str}\n<div>{element_html_str}</div>"
         return self
 
 
@@ -110,4 +115,47 @@ class TabsHTML(TemplateHTMLBuilder):
         self.replace("button", '')
         self.replace("div_tab", '')
         return self._html_str
+
+
+class HTMLTableBuilder(TemplateHTMLBuilder):
+    def __init__(self, title):
+        super().__init__('table')
+        self.add_title(title)
+
+    def add_title(self, title):
+        self.replace('title', title)
+
+    def add_column_names(self, columns):
+        cols_html = "".join([f"<th>{column}</th>" for column in columns])
+        cols_html = f"<tr>{cols_html}</tr>"
+        self.replace('columns', cols_html)
+
+    def add_row(self, row):
+        cols_html = "".join([f"<td>{column}</td>" for column in row])
+        cols_html = f"<tr>{cols_html}</tr>\n    [row]"
+        self.replace('row', cols_html)
+
+    def html(self):
+        self.replace("row", '')
+        return self._html_str
+
+
+class SimpleHTMLTable(HTMLTableBuilder):
+    def __init__(self, df, title=''):
+        super().__init__(title)
+        self._df = df
+        self.add_column_names(self._df.columns)
+        for row in self._df.iterrows():
+            self.add_row(row[1].values)
+
+
+if __name__ == "__main__":
+    import pandas as pd
+
+    test_df = pd.DataFrame(data={'a': [1, 2, 3, 4],
+                                 'b': [1, 10, 100, 1000],
+                                 'c': ['aa', 'ab', 'ac', 'ad'],
+                                 'tags': [[], [], [], []]})
+
+    SimpleHTMLTable(test_df, 'test_title').save('test_table.html')
 

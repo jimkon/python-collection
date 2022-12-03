@@ -65,6 +65,32 @@ class TestImageHTML(unittest.TestCase):
         self.assertEqual(img_html, '<img src="data:image/gif;base64, _bytes_to_utf8" width="200">')
 
 
+class TestSimpleTableHTML(unittest.TestCase):
+    def test_table(self):
+        import pandas as pd
+
+        test_df = pd.DataFrame(data={'a': [1, 2, 3, 4],
+                                     'b': [1, 10, 100, 1000],
+                                     'c': ['aa', 'ab', 'ac', 'ad'],
+                                     'tags': [[], [], [], []]})
+
+        test_str = html_pages.SimpleHTMLTable(test_df, 'test_title').html()
+
+        expected_str = """<h1>test_title</h1>
+<table>
+    <thead>
+        <tr><tr><th>a</th><th>b</th><th>c</th><th>tags</th></tr></tr>
+    </thead>
+    <tbody>
+    <tr><td>1</td><td>1</td><td>aa</td><td>[]</td></tr>
+    <tr><td>2</td><td>10</td><td>ab</td><td>[]</td></tr>
+    <tr><td>3</td><td>100</td><td>ac</td><td>[]</td></tr>
+    <tr><td>4</td><td>1000</td><td>ad</td><td>[]</td></tr>
+    
+    </tbody>
+</table>"""
+        self.assertEqual(test_str, expected_str)
+
 if __name__ == '__main__':
     unittest.main()
 
