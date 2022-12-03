@@ -148,14 +148,3 @@ class SimpleHTMLTable(HTMLTableBuilder):
         for row in self._df.iterrows():
             self.add_row(row[1].values)
 
-
-if __name__ == "__main__":
-    import pandas as pd
-
-    test_df = pd.DataFrame(data={'a': [1, 2, 3, 4],
-                                 'b': [1, 10, 100, 1000],
-                                 'c': ['aa', 'ab', 'ac', 'ad'],
-                                 'tags': [[], [], [], []]})
-
-    SimpleHTMLTable(test_df, 'test_title').save('test_table.html')
-
