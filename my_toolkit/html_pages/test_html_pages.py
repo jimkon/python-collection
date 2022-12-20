@@ -91,6 +91,7 @@ class TestSimpleTableHTML(unittest.TestCase):
 </table>"""
         self.assertEqual(test_str, expected_str)
 
+
 if __name__ == '__main__':
     unittest.main()
 

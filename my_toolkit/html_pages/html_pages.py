@@ -108,7 +108,7 @@ class TabsHTML(TemplateHTMLBuilder):
 
     def add_tab(self, label, html_content):
         self._add_button(label)
-        self._add_div(label, html_content.html())
+        self._add_div(label, html_content.html() if issubclass(html_content.__class__, HTMLObject) else html_content)
         return self
 
     def html(self):
