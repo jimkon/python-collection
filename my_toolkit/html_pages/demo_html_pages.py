@@ -14,8 +14,8 @@ tabs.add_tab("Tab 2", html_pages.SimpleHTMLTable(
 
 
 sub_tabs = html_pages.TabsHTML()
-sub_tabs.add_tab("Sub tab 1", "Sub tab 1")
-sub_tabs.add_tab("Sub tab 2", "Sub tab 2")
+sub_tabs.add_tab("Sub tab 1", "Sub tab 1 element")
+sub_tabs.add_tab("Sub tab 2", "Sub tab 2 element")
 tabs.add_tab("Tab 3", html_pages.HTMLPage().add_element("<h2>Sub tabs</h2>").add_element(sub_tabs))
 
 page.add_element(tabs)
