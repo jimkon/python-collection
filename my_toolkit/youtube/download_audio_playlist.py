@@ -9,12 +9,18 @@ from pytube import YouTube
 from my_toolkit.youtube.youtube_utils import download_best_audio, get_playlist_links
 
 
+DESTINATION_FOLDER = 'files/download_audio_playlist'
+
+
 def is_already_downloaded(_link):
-    already_downloaded = os.listdir('files/download_audio_playlist')
-    title = YouTube(_link).title
-    for downloaded in already_downloaded:
-        if downloaded.startswith(title):
-            return True
+    try:
+        already_downloaded = os.listdir(DESTINATION_FOLDER)
+        title = YouTube(_link).title
+        for downloaded in already_downloaded:
+            if downloaded.startswith(title):
+                return True
+    except Exception as e:
+        print(f"ERROR ({e}): is_already_downloaded failed")
     return False
 
 
@@ -22,22 +28,23 @@ if __name__ == "__main__":
 
     # Asking for all the video links
     links = get_playlist_links(input("Playlist link:"))
-    print(links)
+    print(f"{len(links)}: {links=}")
 
     n = len(links)
 
     # Showing all details for videos and downloading them one by one
     for i in range(0, n):
         link = links[i]
-        print(f"{link: ^50}")
+        print(f"{i}: {link: ^50}")
         if not link.startswith('http'):
             print('SKIPPED: Invalid link')
             continue
 
-        if is_already_downloaded(link):
-            print('SKIPPED: Already download_audio')
-            continue
+        # if is_already_downloaded(link):
+        #     print('SKIPPED: Already download_audio')
+        #     continue
 
-
-
-        download_best_audio(link, 'files/download_audio_playlist')
+        try:
+            download_best_audio(link, DESTINATION_FOLDER)
+        except Exception as e:
+            print(f"ERROR ({e}): Link {link} failed...")
